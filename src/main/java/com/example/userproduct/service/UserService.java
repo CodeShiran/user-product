@@ -11,14 +11,20 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User RegisterUser(User user) {
+    public User registerUser(User user) {
         // Logic to register a user
         return userRepository.save(user);
     }
 
-    public User LoginUser(User user) {
+    public User loginUser(User user) {
         // Logic to login a user
-        return userRepository.findByName(user.getUsername())
+        return userRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found with name: " + user.getUsername()));
+    }
+
+    public void logoutUser(User user) {
+        // Logic to logout a user
+        // In a real application, you might invalidate the session or token here
+        System.out.println("User " + user.getUsername() + " logged out successfully.");
     }
 }
