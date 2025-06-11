@@ -2,6 +2,7 @@ package com.example.userproduct.controller;
 
 import com.example.userproduct.data.User;
 import com.example.userproduct.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,9 +23,14 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String loginUser(@RequestBody User user) {
-        userService.loginUser(user);
-        return "user logged in successfully";
+    public String loginUser(@RequestBody User user, HttpSession session) {
+        User loggedInUser = userService.loginUser(user);
+        if (loggedInUser != null) {
+            session.setAttribute("user", loggedInUser);
+            return "user logged in successfully";
+        } else {
+            return "login failed";
+        }
     }
 
     @PostMapping("/logout")
